@@ -25,9 +25,9 @@ export class SendGridService {
   }
 
   send(info: ISendEmail): Promise<HttpStatus> {
-    const requestObj = this.prepareRequest(info);
+    const bodyJSON = this.prepareBodyJSON(info);
     const headers = { Authorization: `Bearer ${this._config.token}` };
-    return this.httpSvc.post<void>(this._config.url, requestObj, { headers })
+    return this.httpSvc.post<void>(this._config.url, bodyJSON, { headers })
       .pipe(
         map(response => response.status),
         catchError(err => {
@@ -38,7 +38,7 @@ export class SendGridService {
       .toPromise();
   }
 
-  private prepareRequest(info: ISendEmail): any {
+  private prepareBodyJSON(info: ISendEmail): any {
     const { subject, body, toEmails, ccEmails, bccEmails } = info;
     return {
       personalizations: [
