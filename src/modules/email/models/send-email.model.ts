@@ -1,7 +1,9 @@
+import { IEmail } from './email.model';
+
 export interface ISendEmail {
-  toEmails: string[];
-  ccEmails?: string[];
-  bccEmails?: string[];
+  toEmails: IEmail[];
+  ccEmails?: IEmail[];
+  bccEmails?: IEmail[];
   subject: string;
   body: string;
 }

@@ -1,5 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ArrayMinSize, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ArrayMinSize, IsNotEmpty, IsNotEmptyObject, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+
+import { EmailDto } from './email.dto';
 
 export class SendEmailDto {
   @ApiProperty()
@@ -14,17 +17,22 @@ export class SendEmailDto {
 
   @ApiProperty()
   @ArrayMinSize(1)
-  @IsEmail({}, { each: true })
-  @IsNotEmpty({ each: true })
-  readonly toEmails: string[];
+  @IsNotEmptyObject({ nullable: false }, { each: true })
+  @ValidateNested({ each: true })
+  @Type(() => EmailDto)
+  readonly toEmails: EmailDto[];
 
   @ApiPropertyOptional()
   @IsOptional()
-  @IsEmail(null, { each: true })
-  readonly ccEmails: string[];
+  @IsNotEmptyObject({ nullable: false }, { each: true })
+  @ValidateNested({ each: true })
+  @Type(() => EmailDto)
+  readonly ccEmails: EmailDto[];
 
   @ApiPropertyOptional()
   @IsOptional()
-  @IsEmail(null, { each: true })
-  readonly bccEmails: string[];
+  @IsNotEmptyObject({ nullable: false }, { each: true })
+  @ValidateNested({ each: true })
+  @Type(() => EmailDto)
+  readonly bccEmails: EmailDto[];
 }
