@@ -1,10 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+
 import { ISendEmail } from '../models/send-email.model';
+import { SendGridService } from './send-grid.service';
 
 @Injectable()
 export class EmailService {
-  send(info: ISendEmail): Promise<void> {
+  constructor(private sendGridSvc: SendGridService) {}
+
+  async send(info: ISendEmail): Promise<void> {
     console.log(info);
-    return;
+    const statusCode = await this.sendGridSvc.send(info);
+    if (statusCode < 400) {
+      return;
+    }
+
+    throw new HttpException({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      error: 'Internal Server Error',
+    }, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
