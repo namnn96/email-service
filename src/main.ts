@@ -28,7 +28,8 @@ async function bootstrap() {
 
   setupSwagger(app);
 
-  await app.listen(3000);
+  const port = app.get('ConfigService').get('port');
+  await app.listen(port);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
