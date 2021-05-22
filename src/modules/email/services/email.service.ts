@@ -2,14 +2,20 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { ISendEmail } from '../models/send-email.model';
 import { SendGridService } from './send-grid.service';
+import { MailGunService } from './mail-gun.service';
 
 @Injectable()
 export class EmailService {
-  constructor(private sendGridSvc: SendGridService) {}
+  constructor(
+    private sendGridSvc: SendGridService,
+    private mailGunSvc: MailGunService
+  ) {}
 
   async send(info: ISendEmail): Promise<void> {
     console.log(info);
-    const statusCode = await this.sendGridSvc.send(info);
+    // const statusCode = await this.sendGridSvc.send(info);
+    const statusCode = await this.mailGunSvc.send(info);
+
     if (statusCode < 400) {
       return;
     }
