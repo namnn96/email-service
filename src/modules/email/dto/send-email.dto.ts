@@ -5,7 +5,7 @@ export class SendEmailDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly title: string;
+  readonly subject: string;
 
   @ApiProperty()
   @IsString()

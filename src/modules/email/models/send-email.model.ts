@@ -2,6 +2,6 @@ export interface ISendEmail {
   toEmails: string[];
   ccEmails?: string[];
   bccEmails?: string[];
-  title: string;
+  subject: string;
   body: string;
 }
