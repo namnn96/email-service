@@ -2,7 +2,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
 
-import { AppModule } from './app.module';
+import { ApiModule } from '@app/api/api.module';
+import { WorkerModule } from '@app/worker/worker.module';
 
 function setupSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
@@ -23,13 +24,17 @@ function setupSwagger(app: INestApplication) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const isApi = process.env.APP === 'api';
+  const app = isApi
+    ? await NestFactory.create(ApiModule)
+    : await NestFactory.create(WorkerModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  setupSwagger(app);
+  if (isApi) {
+    setupSwagger(app);
+  }
 
-  const port = app.get('ConfigService').get('port');
-  await app.listen(port);
+  await app.listen(+process.env.PORT);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

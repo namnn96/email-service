@@ -10,7 +10,7 @@ export class EmailController {
   constructor(private readonly _emailSvc: EmailService) {}
 
   @Post('send')
-  async send(@Body() sendEmailDto: SendEmailDto) {
-    await this._emailSvc.send(sendEmailDto);
+  send(@Body() sendEmailDto: SendEmailDto) {
+    return this._emailSvc.send(sendEmailDto);
   }
 }

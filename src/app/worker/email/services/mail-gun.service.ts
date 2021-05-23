@@ -1,11 +1,12 @@
-import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as FormData from 'form-data';
 
-import { ISendEmail } from '../models/send-email.model';
-import { IEmail } from '../models/email.model';
+import { base64Encode } from '@shared/utils';
+import { ISendEmail, ISendEmailResponse } from '@app/api/email/models/send-email.model';
+import { IEmail } from '@app/api/email/models/email.model';
 
 interface IMailGunConfig {
   apiKey: string;
@@ -25,16 +26,16 @@ export class MailGunService {
     this._sender = this.configSvc.get<IEmail>('sender');
   }
 
-  send(info: ISendEmail): Promise<HttpStatus> {
+  send(info: ISendEmail): Promise<ISendEmailResponse> {
     const formData = this.prepareFormData(info);
-    const token = Buffer.from(`api:${this._config.apiKey}`).toString('base64');
+    const token = base64Encode(`api:${this._config.apiKey}`);
     const headers = { ...formData.getHeaders(), Authorization: `Basic ${token}` };
     return this.httpSvc.post<void>(this._config.url, formData, { headers })
       .pipe(
-        map(response => response.status),
+        map(response => ({ status: response.status })),
         catchError(err => {
-          console.log(err);
-          return of(err.status);
+          const message = err.response.data.message;
+          return of({ status: err.response.status, message });
         })
       )
       .toPromise();
