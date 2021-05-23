@@ -8,13 +8,16 @@ import { base64Encode } from '@shared/utils';
 import { ISendEmail, ISendEmailResponse } from '@app/api/email/models/send-email.model';
 import { IEmail } from '@app/api/email/models/email.model';
 
+import { EmailProviderName, IEmailProvider } from '../models/provider.model';
+
 interface IMailGunConfig {
   apiKey: string;
   url: string;
 }
 
 @Injectable()
-export class MailGunService {
+export class MailGunService implements IEmailProvider {
+  public name: EmailProviderName = EmailProviderName.MailGun;
   private readonly _config: IMailGunConfig;
   private readonly _sender: IEmail;
 

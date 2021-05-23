@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 
 import config from '@core/config';
-import { bullConfigFactory } from '@core/services/bull-config.service';
+import { bullConfigFactory } from '@core/factories/bull-config.factory';
 import { CoreModule } from '@core/core.module';
 import { EmailModule } from '@app/worker/email/email.module';
 
@@ -16,7 +16,7 @@ import { EmailModule } from '@app/worker/email/email.module';
       inject: [ConfigService],
     }),
     CoreModule,
-    EmailModule
+    EmailModule,
   ],
 })
 export class WorkerModule {}

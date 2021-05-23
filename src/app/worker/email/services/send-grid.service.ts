@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 
 import { ISendEmail, ISendEmailResponse } from '@app/api/email/models/send-email.model';
 import { IEmail } from '@app/api/email/models/email.model';
+import { EmailProviderName, IEmailProvider } from '@app/worker/email/models/provider.model';
 
 interface ISendGridConfig {
   token: string;
@@ -12,7 +13,8 @@ interface ISendGridConfig {
 }
 
 @Injectable()
-export class SendGridService {
+export class SendGridService implements IEmailProvider {
+  public name: EmailProviderName = EmailProviderName.SendGrid;
   private readonly _config: ISendGridConfig;
   private readonly _sender: IEmail;
 
