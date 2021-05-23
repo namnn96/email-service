@@ -6,8 +6,8 @@ import { base64Encode } from '@shared/utils';
 import { ISendEmail, ISendEmailResponse } from '@app/api/email/models/send-email.model';
 import { EmailQueue, SendEmailJob } from '@app/api/email/models/queue.model';
 
-import { SendGridService } from '../services/send-grid.service';
-import { MailGunService } from '../services/mail-gun.service';
+import { SendGridService } from './services/send-grid.service';
+import { MailGunService } from './services/mail-gun.service';
 
 @Processor(EmailQueue)
 export class EmailProcessor {

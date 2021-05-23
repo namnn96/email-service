@@ -5,7 +5,7 @@ import { EmailQueue } from '@app/api/email/models/queue.model';
 
 import { SendGridService } from './services/send-grid.service';
 import { MailGunService } from './services/mail-gun.service';
-import { EmailProcessor } from './processors/email.processor';
+import { EmailProcessor } from './email.processor';
 
 @Module({
   imports: [
