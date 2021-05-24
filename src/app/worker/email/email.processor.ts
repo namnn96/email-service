@@ -10,7 +10,7 @@ import { ProviderService } from './services/provider.service';
 export class EmailProcessor {
   constructor(private providerSvc: ProviderService) {}
 
-  @Process(SendEmailJob)
+  @Process({ name: SendEmailJob, concurrency: 2 })
   async send(job: Job): Promise<ISendEmailResponse> {
     console.log(`[Job ${job.id}] Processing...`);
     const info: ISendEmail = job.data;

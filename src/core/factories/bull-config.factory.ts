@@ -9,9 +9,5 @@ export function bullConfigFactory(configService: ConfigService): QueueOptions {
       db: +configService.get('redis.db'),
       keyPrefix: configService.get('redis.prefix'),
     },
-    // defaultJobOptions: {
-    //   removeOnComplete: true,
-    //   removeOnFail: true
-    // }
   }
 }
