@@ -15,21 +15,21 @@ export class SendEmailDto {
   @IsNotEmpty()
   readonly body: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => [EmailDto] })
   @ArrayMinSize(1)
   @IsNotEmptyObject({ nullable: false }, { each: true })
   @ValidateNested({ each: true })
   @Type(() => EmailDto)
   readonly toEmails: EmailDto[];
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: () => [EmailDto] })
   @IsOptional()
   @IsNotEmptyObject({ nullable: false }, { each: true })
   @ValidateNested({ each: true })
   @Type(() => EmailDto)
   readonly ccEmails: EmailDto[];
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: () => [EmailDto] })
   @IsOptional()
   @IsNotEmptyObject({ nullable: false }, { each: true })
   @ValidateNested({ each: true })
