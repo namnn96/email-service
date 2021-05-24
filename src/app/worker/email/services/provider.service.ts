@@ -4,6 +4,7 @@ import { Cache } from 'cache-manager';
 
 import { base64Encode } from '@shared/utils';
 import { ISendEmail, ISendEmailResponse } from '@app/api/email/models/send-email.model';
+import { FailRateService } from '@app/worker/fail-rate/services/fail-rate.service';
 
 import { EmailProviderName, IEmailProvider } from '../models/provider.model';
 import { SendGridService } from './send-grid.service';
@@ -15,11 +16,13 @@ const DefaultProviderQueue = [EmailProviderName.SendGrid, EmailProviderName.Mail
 export class ProviderService {
   private readonly _logger: Logger = new Logger(ProviderService.name);
   private _providerBucket: { [key: string]: IEmailProvider } = {};
+  private _providerFailRateMap: { [key: string]: string } = {};
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private sendGridSvc: SendGridService,
-    private mailGunSvc: MailGunService
+    private mailGunSvc: MailGunService,
+    private failRateSvc: FailRateService
   ) {
     this.registerProviders();
   }
@@ -29,17 +32,28 @@ export class ProviderService {
       [EmailProviderName.MailGun]: this.mailGunSvc,
       [EmailProviderName.SendGrid]: this.sendGridSvc
     };
+    this._providerFailRateMap = {
+      [EmailProviderName.MailGun]: 'mailGun',
+      [EmailProviderName.SendGrid]: 'sendGrid'
+    };
   }
 
   async send(jobId: JobId, info: ISendEmail): Promise<ISendEmailResponse> {
     const providers = await this.getProviders();
+    const failRates = await this.failRateSvc.get();
 
     let emailSent: boolean = false;
     let idx: number = 0;
     let response: ISendEmailResponse;
     while (!emailSent && idx < providers.length) {
       const emailProvider = this._providerBucket[providers[0]];
-      response = await emailProvider.send(info);
+      const failRate = failRates[this._providerFailRateMap[providers[0]]];
+
+      if (failRate > Math.random()) { // force provider to appear as fail
+        response = { status: HttpStatus.BAD_GATEWAY, message: 'Bad gateway due to fail rate' };
+      } else { // ...otherwise let it flow to make a http call to the provider
+        response = await emailProvider.send(info);
+      }
 
       if (response.status < 400) { // email sent successfully
         this._logger.log(`[Job ${jobId}] Provider "${emailProvider.name}" succeeded`);

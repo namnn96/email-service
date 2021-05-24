@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { cacheConfigFactory } from '@core/factories/cache-config.factory';
 import { EmailQueue } from '@app/api/email/models/queue.model';
+import { FailRateService } from '@app/worker/fail-rate/services/fail-rate.service';
 
 import { SendGridService } from './services/send-grid.service';
 import { MailGunService } from './services/mail-gun.service';
@@ -22,6 +23,6 @@ import { EmailProcessor } from './email.processor';
       inject: [ConfigService],
     }),
   ],
-  providers: [EmailProcessor, ProviderService, SendGridService, MailGunService],
+  providers: [EmailProcessor, ProviderService, SendGridService, MailGunService, FailRateService],
 })
 export class EmailModule {}

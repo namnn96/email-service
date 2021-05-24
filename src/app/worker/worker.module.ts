@@ -6,6 +6,7 @@ import config from '@core/config';
 import { bullConfigFactory } from '@core/factories/bull-config.factory';
 import { CoreModule } from '@core/core.module';
 import { EmailModule } from '@app/worker/email/email.module';
+import { FailRateModule } from '@app/worker/fail-rate/fail-rate.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EmailModule } from '@app/worker/email/email.module';
     }),
     CoreModule,
     EmailModule,
+    FailRateModule
   ],
 })
 export class WorkerModule {}
