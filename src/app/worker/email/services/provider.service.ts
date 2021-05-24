@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { JobId } from 'bull';
 import { Cache } from 'cache-manager';
 
@@ -13,6 +13,7 @@ const DefaultProviderQueue = [EmailProviderName.SendGrid, EmailProviderName.Mail
 
 @Injectable()
 export class ProviderService {
+  private readonly _logger: Logger = new Logger(ProviderService.name);
   private _providerBucket: { [key: string]: IEmailProvider } = {};
 
   constructor(
@@ -41,10 +42,10 @@ export class ProviderService {
       response = await emailProvider.send(info);
 
       if (response.status < 400) { // email sent successfully
-        console.log(`[Job ${jobId}] Provider "${emailProvider.name}" succeeded`);
+        this._logger.log(`[Job ${jobId}] Provider "${emailProvider.name}" succeeded`);
         emailSent = true;
       } else { // emailProvider failed to send
-        console.log(`[Job ${jobId}] Provider "${emailProvider.name}" failed -`, base64Encode(JSON.stringify(response)));
+        this._logger.log(`[Job ${jobId}] Provider "${emailProvider.name}" failed - ${base64Encode(JSON.stringify(response))}`);
         providers.push(providers.shift()); // move on to the next provider in list
         idx++;
       }
@@ -70,7 +71,7 @@ export class ProviderService {
     try {
       await this.cacheManager.set('providers', providers);
     } catch (e) {
-      console.log(e);
+      this._logger.error(e);
     }
   }
 
@@ -83,7 +84,7 @@ export class ProviderService {
       }
       return providers;
     } catch (e) {
-      console.log(e);
+      this._logger.error(e);
       return DefaultProviderQueue;
     }
   }
