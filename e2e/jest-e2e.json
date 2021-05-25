@@ -1,14 +1,26 @@
 {
-    "moduleFileExtensions": [
-        "ts",
-        "tsx",
-        "js",
-        "json"
-    ],
-    "transform": {
-        "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "/e2e/.*\\.(e2e-test|e2e-spec).(ts|tsx|js)$",
-    "collectCoverageFrom" : ["src/**/*.{js,jsx,tsx,ts}", "!**/node_modules/**", "!**/vendor/**"],
-    "coverageReporters": ["json", "lcov"]
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "json"
+  ],
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "testRegex": "/e2e/.*\\.(e2e-test|e2e-spec).(ts|tsx|js)$",
+  "collectCoverageFrom": [
+    "src/**/*.{js,jsx,tsx,ts}",
+    "!**/node_modules/**",
+    "!**/vendor/**"
+  ],
+  "coverageReporters": [
+    "json",
+    "lcov"
+  ],
+  "moduleNameMapper": {
+    "^@app/(.*)$": "<rootDir>/src/app/$1",
+    "^@config/(.*)$": "<rootDir>/src/config/$1",
+    "^@shared/(.*)$": "<rootDir>/src/shared/$1"
+  }
 }
