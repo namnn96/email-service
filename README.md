@@ -2,7 +2,10 @@
 Abstraction of 2 email providers: [MailGun](https://www.mailgun.com/) and [SendGrid](https://sendgrid.com/).
 
 ## Live Demo
-Swagger page for backend service [http://34.116.123.6/api/](http://34.116.123.6/api/).
+* Swagger page for backend service [http://34.116.123.6/api/](http://34.116.123.6/api/)
+* Simple Vue application to act as a client of the above backend service
+    * Static web page [http://35.244.110.94/](http://35.244.110.94/)
+    * Github repo [https://github.com/namnn96/email-client](https://github.com/namnn96/email-client)
 
 ## Pre-requisites
 * Node v12+ and npm 6+
