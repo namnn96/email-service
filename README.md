@@ -25,7 +25,7 @@ Use `fail-rate` endpoints to force provider(s) to fail at a certain rate.
     ```python
     docker run -d -p 6379:6379 redis
     ```
-* Create a `.env` file from the `.env.example` provided.
+* Create a `.env` file from the `.env.example` provided
 * Add missing environment variables
 * Start api instance (accessible at [http://localhost:3000/api/](http://localhost:3000/api/))
 
@@ -46,8 +46,8 @@ npm run test
 
 ## To-do
 #### Retry Policy
-* Retry policy for job queue
-* Retry policy for failed email provider(s)
+* Retry policy for a job OR
+* Retry policy after a certain period of time if all email providers fail
 
 #### Job Queue
 * Return job's ID on top of 201 HTTP status
