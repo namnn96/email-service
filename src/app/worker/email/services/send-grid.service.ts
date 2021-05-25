@@ -43,13 +43,13 @@ export class SendGridService implements IEmailProvider {
   }
 
   private prepareBodyJSON(info: ISendEmail): any {
-    const { subject, body, toEmails, ccEmails, bccEmails } = info;
+    const { subject, body, toEmails, ccEmails = [], bccEmails = [] } = info;
     return {
       personalizations: [
         {
           to: toEmails,
-          ...((ccEmails || []).length > 0 ? { cc: ccEmails } : []),
-          ...((bccEmails || []).length > 0 ? { bcc: bccEmails } : [])
+          ...(ccEmails.length > 0 ? { cc: ccEmails } : {}),
+          ...(bccEmails.length > 0 ? { bcc: bccEmails } : {})
         }
       ],
       from: this._sender,
