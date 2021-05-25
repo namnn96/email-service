@@ -15,6 +15,7 @@ export class FailRateService {
   async set(info: IFailRate): Promise<void> {
     try {
       await this.cacheManager.set(this._cacheKey, info, { ttl: 0 }); // persist fail-rate without ttl
+      this._logger.log('Fail rate set successfully!');
     } catch (e) {
       this._logger.error(e);
       throw e;

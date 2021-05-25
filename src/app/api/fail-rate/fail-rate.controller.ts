@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { FailRateDto } from './dto/fail-rate.dto';
@@ -12,5 +12,10 @@ export class FailRateController {
   @Post()
   set(@Body() failRateDto: FailRateDto) {
     return this.failRateSvc.set(failRateDto);
+  }
+
+  @Get()
+  get(): Promise<FailRateDto> {
+    return this.failRateSvc.get();
   }
 }

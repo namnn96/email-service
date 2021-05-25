@@ -8,9 +8,6 @@ export function bullConfigFactory(configService: ConfigService): QueueOptions {
       port: +configService.get('redis.port'),
       db: +configService.get('redis.db'),
       keyPrefix: configService.get('redis.prefix'),
-    },
-    defaultJobOptions: {
-      removeOnComplete: true
     }
   }
 }
