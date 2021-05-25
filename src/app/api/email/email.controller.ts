@@ -7,10 +7,10 @@ import { EmailService } from './services/email.service';
 @ApiTags('email')
 @Controller('api/v1/email')
 export class EmailController {
-  constructor(private readonly _emailSvc: EmailService) {}
+  constructor(private readonly emailSvc: EmailService) {}
 
   @Post('send')
   send(@Body() sendEmailDto: SendEmailDto) {
-    return this._emailSvc.send(sendEmailDto);
+    return this.emailSvc.send(sendEmailDto);
   }
 }
