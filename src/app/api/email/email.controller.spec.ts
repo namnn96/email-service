@@ -1,11 +1,10 @@
 import { Test } from '@nestjs/testing';
-import { HttpModule, HttpStatus } from '@nestjs/common';
+import { HttpModule } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 
 import { EmailController } from './email.controller';
 import { EmailService } from './services/email.service';
 import { SendEmailDto } from './dto/send-email.dto';
-import { ISendEmailResponse } from './models/send-email.model';
 import { EmailQueue } from './models/queue.model';
 
 describe('EmailController', () => {
@@ -26,12 +25,11 @@ describe('EmailController', () => {
   });
 
   describe('send', () => {
-    it('should return a send-mail response', async () => {
+    it('should invoke EmailService.send with arg', async () => {
       const sendMailDto: SendEmailDto = new SendEmailDto();
-      const result: ISendEmailResponse = { status: HttpStatus.OK };
-      jest.spyOn(emailService, 'send').mockImplementation(() => Promise.resolve(result));
-
-      expect(await emailController.send(sendMailDto)).toBe(result);
+      jest.spyOn(emailService, 'send').mockImplementation(() => Promise.resolve());
+      await emailController.send(sendMailDto);
+      expect(emailService.send).toHaveBeenCalledWith(sendMailDto)
     });
   });
 });

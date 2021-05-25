@@ -25,12 +25,11 @@ describe('FailRateController', () => {
   });
 
   describe('set', () => {
-    it('should return OK', async () => {
+    it('should invoke FailRateService.set with arg', async () => {
       const failRateDto: FailRateDto = new FailRateDto();
-      const result: string = 'OK';
-      jest.spyOn(failRateService, 'set').mockImplementation(() => Promise.resolve(result));
-
-      expect(await failRateController.set(failRateDto)).toBe(result);
+      jest.spyOn(failRateService, 'set').mockImplementation(() => Promise.resolve());
+      await failRateController.set(failRateDto);
+      expect(failRateService.set).toHaveBeenCalledWith(failRateDto);
     });
   });
 });
