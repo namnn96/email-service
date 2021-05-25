@@ -20,6 +20,7 @@
   ],
   "moduleNameMapper": {
     "^@app/(.*)$": "<rootDir>/src/app/$1",
+    "^@core/(.*)$": "<rootDir>/src/core/$1",
     "^@config/(.*)$": "<rootDir>/src/config/$1",
     "^@shared/(.*)$": "<rootDir>/src/shared/$1"
   }
