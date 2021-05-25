@@ -31,6 +31,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   if (isApi) {
+    app.enableCors();
     setupSwagger(app);
   }
 
