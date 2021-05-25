@@ -1,4 +1,4 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -17,6 +17,7 @@ interface IMailGunConfig {
 
 @Injectable()
 export class MailGunService implements IEmailProvider {
+  private readonly _logger: Logger = new Logger(MailGunService.name);
   public name: EmailProviderName = EmailProviderName.MailGun;
   private readonly _config: IMailGunConfig;
   private readonly _sender: IEmail;
@@ -38,6 +39,7 @@ export class MailGunService implements IEmailProvider {
         map(response => ({ status: response.status })),
         catchError(err => {
           const message = err.response.data.message;
+          this._logger.error(message);
           return of({ status: err.response.status, message });
         })
       )

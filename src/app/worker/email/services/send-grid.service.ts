@@ -1,4 +1,4 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -14,6 +14,7 @@ interface ISendGridConfig {
 
 @Injectable()
 export class SendGridService implements IEmailProvider {
+  private readonly _logger: Logger = new Logger(SendGridService.name);
   public name: EmailProviderName = EmailProviderName.SendGrid;
   private readonly _config: ISendGridConfig;
   private readonly _sender: IEmail;
@@ -34,6 +35,7 @@ export class SendGridService implements IEmailProvider {
         map(response => ({ status: response.status })),
         catchError(err => {
           const message = err.response.data.errors.forEach(e => e.message).join('\n');
+          this._logger.error(message);
           return of({ status: err.status, message });
         })
       )

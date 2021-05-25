@@ -26,8 +26,8 @@ function setupSwagger(app: INestApplication) {
 async function bootstrap() {
   const isApi = process.env.APP === 'api';
   const app = isApi
-    ? await NestFactory.create(ApiModule)
-    : await NestFactory.create(WorkerModule);
+    ? await NestFactory.create(ApiModule, { logger: ['log', 'error'] })
+    : await NestFactory.create(WorkerModule, { logger: ['log', 'error'] });
   app.useGlobalPipes(new ValidationPipe());
 
   if (isApi) {

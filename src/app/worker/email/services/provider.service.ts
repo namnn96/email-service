@@ -59,14 +59,14 @@ export class ProviderService {
         this._logger.log(`[Job ${jobId}] Provider "${emailProvider.name}" succeeded`);
         emailSent = true;
       } else { // emailProvider failed to send
-        this._logger.log(`[Job ${jobId}] Provider "${emailProvider.name}" failed - ${base64Encode(JSON.stringify(response))}`);
+        this._logger.log(`[Job ${jobId}] Provider "${emailProvider.name}" failed - ${base64Encode(JSON.stringify(info))}`);
         providers.push(providers.shift()); // move on to the next provider in list
         idx++;
       }
     }
 
     // Return status and message as is if succeeds
-    if (response.status < 400) {
+    if (emailSent) {
       // Update provider queue in cache to inform future jobs about which provider to try first
       if (idx > 0) {
         this.setProviders(providers);

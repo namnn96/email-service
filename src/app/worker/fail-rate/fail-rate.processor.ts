@@ -14,9 +14,9 @@ export class FailRateProcessor {
 
   @Process({ name: SetFailRateJob })
   async set(job: Job): Promise<void> {
-    this._logger.log(`[Job ${job.id}] Processing...`);
+    this._logger.debug(`[Job ${job.id}] Processing...`);
     const info: IFailRate = job.data;
     await this.failRateSvc.set(info);
-    this._logger.log(`[Job ${job.id}] Done!`);
+    this._logger.debug(`[Job ${job.id}] Done!`);
   }
 }

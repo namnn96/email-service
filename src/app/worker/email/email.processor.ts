@@ -14,10 +14,10 @@ export class EmailProcessor {
 
   @Process({ name: SendEmailJob, concurrency: 2 })
   async send(job: Job): Promise<ISendEmailResponse> {
-    this._logger.log(`[Job ${job.id}] Processing...`);
+    this._logger.debug(`[Job ${job.id}] Processing...`);
     const info: ISendEmail = job.data;
     const response = await this.providerSvc.send(job.id, info);
-    this._logger.log(`[Job ${job.id}] Done!`);
+    this._logger.debug(`[Job ${job.id}] Done!`);
     return response;
   }
 }
